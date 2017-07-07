@@ -1,6 +1,7 @@
 library(reshape2)
 library(kali)
 library(sp)
+library(mapdata)
 library(maptools)
 
 source("aux_functions.R")
@@ -21,8 +22,8 @@ pbp = cbind(pbp, ancLEN)
 pbp$ncatch = rowSums(ancLEN)
 
 # filters
-coast = read.csv("input/costa_peps.csv")
-shelf = read.csv("input/shelfBreak_peps.csv")
+coast = read.csv("raw/costa_peps.csv")
+shelf = read.csv("raw/shelfBreak_peps.csv")
 xdist     = getSignedDistance(data=pbp, ref=shelf, abs=coast)
 pbp$shelf = round(xdist$dist, 3)
 pbp$dc    = round(xdist$abs, 3)
