@@ -20,6 +20,7 @@
 
 # Big binary data files
 *.RData
+results/input/*.csv
 
 # LaTeX auxiliar files
 *.log

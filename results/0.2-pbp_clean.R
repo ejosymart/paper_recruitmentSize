@@ -3,11 +3,11 @@ library(kali)
 library(sp)
 library(maptools)
 
-source("code/aux_functions.R")
+source("aux_functions.R")
 
-raw <- read.csv("data/Base_PBP.csv", stringsAsFactors = FALSE, na.strings = c("NA", "", "SIN DATO"))
+raw <- read.csv("raw/Base_PBP.csv", stringsAsFactors = FALSE, na.strings = c("NA", "", "SIN DATO"))
 
-pbp = data.frame(year=raw$AÃ‘O, month=raw$MES, port=raw$PUERTO_SALIDA, 
+pbp = data.frame(year=raw$AÑO, month=raw$MES, port=raw$PUERTO_SALIDA, 
                  yield=raw$CAPTURA_ANCHOVETA, fishing_area_method=raw$ELECCION_ZONA_PESCA,
                  type1=raw$TIPOLOGIA_1, type2=raw$TIPOLOGIA_2, trip_type=raw$TIPO_VIAJE,
                  set=raw$NUMERO_CALA, total_set=raw$TOTAL_CALAS, sst=raw$TEMP_SUPE_MAR,
@@ -21,8 +21,8 @@ pbp = cbind(pbp, ancLEN)
 pbp$ncatch = rowSums(ancLEN)
 
 # filters
-coast = read.csv("data/costa_peps.csv")
-shelf = read.csv("data/shelfBreak_peps.csv")
+coast = read.csv("input/costa_peps.csv")
+shelf = read.csv("input/shelfBreak_peps.csv")
 xdist     = getSignedDistance(data=pbp, ref=shelf, abs=coast)
 pbp$shelf = round(xdist$dist, 3)
 pbp$dc    = round(xdist$abs, 3)
@@ -45,5 +45,5 @@ pbp$variable = as.numeric(gsub(gsub(x=pbp$variable, patt="ANCHOVETA_", rep=""), 
 pbp$rec = ifelse(pbp$value>0, 1, 0)
 names(pbp)[grep(x=names(pbp), patt="variable")] = "length"
 
-write.csv(pbp, file="data/base_sizeRecruitment_pbp.csv")
+write.csv(pbp, file="input/base_sizeRecruitment_pbp.csv")
 
