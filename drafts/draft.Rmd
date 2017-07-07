@@ -1,0 +1,29 @@
+---
+title: Title
+subtitle: Two sides of the same coin
+abstract: The abstract
+author:
+  affiliation: Universidad Peruana Cayetano Heredia
+  name: Ricardo Oliveros-Ramos
+fontfamily: mathpazo
+output:
+  word_document: default
+  pdf_document:
+    fig_caption: yes
+    keep_tex: no
+    latex_engine: pdflatex
+    template: svm-latex-ms.tex
+geometry: margin=2.5cm
+keywords: primary production, GAM, mgcv
+fontsize: 11pt
+---
+
+## Introduction
+
+## Methods
+
+## Results and discussion
+
+## Conclusions
+
+## Bibliography

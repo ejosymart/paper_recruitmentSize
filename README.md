@@ -1,2 +1,2 @@
-# paper_recruitmentSize
-Spatio-temporal variability of anchoveta recruitment size
+# article-skeleton
+Repository structure for a scientific article
