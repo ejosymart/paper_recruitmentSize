@@ -12,7 +12,7 @@ meses = c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", 
 cl = makeCluster(nodes)
 
 # Read LC matrix ----------------------------------------------------------
-datos        = read.csv("data/base_frq_mensual.csv", row.names=1)
+datos        = read.csv("raw/base_frq_mensual.csv", row.names=1)
 index        = rownames(datos)
 catch        = rowSums(datos, na.rm = TRUE)
 catch        = ifelse(catch==0, NA, catch)
