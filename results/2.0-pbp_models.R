@@ -18,9 +18,10 @@ xlon  = range(pretty(pbp$lon))
 xsize = range(pbp$length)
 xdc   = range(pretty(pbp$dc))
   
-predBaseLat        = expand.grid(lat=seq(from=xlat[1], to=xlat[2], by=dy), 
-                                 month = 1:12, year = seq(1995, 2017, by = 1), 
+predBaseTime        = expand.grid(month = 1:12, year = seq(1995, 2017, by = 1), 
                                  length = seq(from=xsize[1], to=xsize[2], by = 0.5))
+predBaseTime$time  = with(predBaseTime, year + (month-1)/12)
+predBaseTime        = predBaseTime[sort(predBaseTime$time, index=TRUE)$ix, ]
 
 predBaseLat        = expand.grid(lat=seq(from=xlat[1], to=xlat[2], by=dy), 
                                  length = seq(from=xsize[1], to=xsize[2], by = 0.5))
@@ -35,8 +36,8 @@ predBaseDC         = expand.grid(dc=seq(from=xdc[1], to=xdc[2], by=dx),
 # predBaseDC         = predBaseDC[sort(predBaseDC$time, index=TRUE)$ix, ]
 # predBaseLat$monthF = as.factor(predBaseLat$month)
 # predBaseDC$monthF  = as.factor(predBaseDC$month)
-y                  = unique(predBaseLat$lat)
 x                  = unique(predBaseLat$length)
+y                  = unique(predBaseLat$lat)
 
 
 
@@ -48,9 +49,11 @@ DateStamp()
 recsp2 = bam(rec ~ te(length, lat, k=c(10, 5)), data=pbp, family=binomial(link="logit"), 
              method = "REML", cluster=cl)
 DateStamp()
-
-
-recsp3 = bam(rec ~ te(length, lat), data=pbp, family=binomial(link="logit"), cluster=cl)
+recsp3 = bam(rec ~ te(length, dc, k=c(5, 10)), data=pbp, family=binomial(link="logit"), 
+             method="REML", cluster=cl)
+DateStamp()
+recsp4 = bam(rec ~ te(time, length, k=c(10, 5)), data=pbp, family=binomial(link="logit"), 
+             method="REML", cluster=cl)
 DateStamp()
 
 r0lat1 = predict(recsp1, newdata = predBaseLat, type="response", cluster=cl)
@@ -58,7 +61,7 @@ r0lat1 = predict(recsp1, newdata = predBaseLat, type="response", cluster=cl)
 selectivityPlot(x, y, r0lat1)
 
 r0lat2 = predict(recsp2, newdata = predBaseLat, type="response", cluster=cl)
-r0lat3 = predict(recsp3, newdata = predBaseLat, type="response", cluster=cl)
+selectivityPlot(x, y, r0lat2, levels = c(0.5, 0.95))
 
-
-selectivityPlot(x, y, r0lat1, levels = c(0.5, 0.95))
+r0lat3 = predict(recsp3, newdata = predBaseDC, type="response", cluster=cl)
+selectivityPlot(x, y, r0lat3, levels = c(0.5, 0.95))
